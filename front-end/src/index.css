@@ -1,0 +1,42 @@
+body {
+  background-color: rgb(225, 245, 245)!important;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+.navmenu{
+  background-color: #468A8A !important;
+}
+.navdining{
+  background-color: #144865 !important;
+}
+.img{
+  height: 50% !important;
+  width: 50% !important;
+}
+.card-deck{
+  margin: 3%;
+  padding-left: 5%;
+  padding-right:5%;
+}
+.jwflogo{
+  height: 3% !important;
+  width: 3% !important;;
+}
+.profileimg{
+  height: 4%;
+  width: 4%;
+
+}
+.Resturentinfo{
+  margin: 10% !important;
+}
+
