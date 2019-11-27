@@ -1,63 +1,80 @@
-import React, { Component } from 'react';
-import { Form, Col, Button } from 'react-bootstrap';
+import React, { Component } from "react";
+import { Form, Col, Button } from "react-bootstrap";
+import axios from 'axios'
 
 export default class Registerpage extends Component {
-    render() {
-        return (
-            <div>
-                <Form>
-  <Form.Row>
-    <Form.Group as={Col} controlId="formGridEmail">
-      <Form.Label>Email</Form.Label>
-      <Form.Control type="email" placeholder="Enter email" />
-    </Form.Group>
+  constructor(props) {
+    super(props);
+    this.onSubmit = this.onSubmit.bind(this);
+  }
 
-    <Form.Group as={Col} controlId="formGridPassword">
-      <Form.Label>Password</Form.Label>
-      <Form.Control type="password" placeholder="Password" />
-    </Form.Group>
-  </Form.Row>
 
-  <Form.Group controlId="formGridAddress1">
-    <Form.Label>Address</Form.Label>
-    <Form.Control placeholder="1234 Main St" />
-  </Form.Group>
 
-  <Form.Group controlId="formGridAddress2">
-    <Form.Label>Address 2</Form.Label>
-    <Form.Control placeholder="Apartment, studio, or floor" />
-  </Form.Group>
+  onSubmit(e) {
+    e.preventDefault();
+    //form valdiation needs to be done first
+    const user = {
+      username: document.getElementById("username").value,
+      email: document.getElementById("formGridEmail").value,
+      password: document.getElementById("formGridPassword").value
+    };
 
-  <Form.Row>
-    <Form.Group as={Col} controlId="formGridCity">
-      <Form.Label>City</Form.Label>
-      <Form.Control />
-    </Form.Group>
+    axios
+      .post("http://localhost:5300/api/auth/register", user)
+      .then(res => {
 
-    <Form.Group as={Col} controlId="formGridState">
-      <Form.Label>State</Form.Label>
-      <Form.Control as="select">
-        <option>Choose...</option>
-        <option>...</option>
-      </Form.Control>
-    </Form.Group>
+         console.log(res.data)
+         document.getElementById('redirect').click();
+        
+      })
+      .catch(err => {
+        console.log(err)
+     
 
-    <Form.Group as={Col} controlId="formGridZip">
-      <Form.Label>Zip</Form.Label>
-      <Form.Control />
-    </Form.Group>
-  </Form.Row>
+      });
+  }
 
-  <Form.Group id="formGridCheckbox">
-    <Form.Check type="checkbox" label="Check me out" />
-  </Form.Group>
+  render() {
+    return (
+      <div>
+        <a href="/login"  style={{display:'none'}} id="redirect">yes there are more civilized ways to redirect the user but this is what I can do for now</a>
+        <Form>
+          <Form.Row>
+          <Form.Group as={Col} controlId="username">
+              <Form.Label>Username</Form.Label>
+              <Form.Control type="text" placeholder="Enter email" />
+            </Form.Group>
 
-  <Button variant="primary" type="submit">
-    Submit
-  </Button>
-</Form>
-            </div>
-        )
-    }
+            <Form.Group as={Col} controlId="formGridEmail">
+              <Form.Label>Email</Form.Label>
+              <Form.Control type="email" placeholder="Enter email" />
+            </Form.Group>
+
+            <Form.Group as={Col} controlId="formGridPassword">
+              <Form.Label>Password</Form.Label>
+              <Form.Control type="password" placeholder="Password" />
+            </Form.Group>
+         
+          
+          <Form.Group as={Col} controlId="repeatedPassword">
+              <Form.Label>Renter Your Password</Form.Label>
+              <Form.Control type="password" placeholder="Password" />
+            </Form.Group>
+          </Form.Row>
+
+
+          <Form.Group id="formGridCheckbox">
+            <Form.Check
+              type="checkbox"
+              label="Agree to the terms of services"
+            />
+          </Form.Group>
+
+          <Button variant="primary" type="submit" onClick={this.onSubmit}>
+            Submit
+          </Button>
+        </Form>
+      </div>
+    );
+  }
 }
-

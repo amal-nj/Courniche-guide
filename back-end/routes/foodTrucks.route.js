@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 const router = express.Router();
 
 //get all food trucks data
-router.get("/", (req, res) => {
+router.get("/", passport.authenticate("jwt", { session: false }), (req, res) => {
   FoodTruck.find()
     .then(data => {
       res.send(data);
