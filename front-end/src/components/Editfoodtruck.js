@@ -3,7 +3,7 @@ import axios from "axios";
 import { getToken, setToken, logout, setUser, getUser } from "../services/auth";
 import { Redirect } from 'react-router-dom'
 
-export default class Admaddresturent extends Component {
+export default class Editfoodtruck extends Component {
   constructor(props) {
     super(props);
     this.onChangeImage = this.onChangeImage.bind(this);
@@ -11,7 +11,8 @@ export default class Admaddresturent extends Component {
     // this.onChangType= this.onChangeType.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.onChangeLocation = this.onChangeLocation.bind(this);
-    this.submit = this.submit.bind(this);
+    this.edit = this.edit.bind(this);
+    this.delete = this.delete.bind(this);
     this.onChangeType=this.onChangeType.bind(this)
 
     this.state = {
@@ -21,7 +22,7 @@ export default class Admaddresturent extends Component {
       description: "",
       location: "",
       foodtrucknew: [],
-    
+      id: this.props.match.params.id,
       redirect: false
 
     };
@@ -63,20 +64,21 @@ export default class Admaddresturent extends Component {
       location: e.target.value
     });
   }
-  submit(e) {
+  edit(e) {
     e.preventDefault();
-    const rest = {
-      picURL: this.state.image,
+    const addfoodtruck = {
+      image: this.state.image,
       name: this.state.name,
       type: this.state.type,
       description: this.state.description,
       location: this.state.location
     };
+    console.log(addfoodtruck);
 
     axios
-      .post(
-        `http://localhost:5300/api/restaurants/add`,
-        rest,
+      .put(
+        `http://localhost:5300/api/foodTrucks/edit/${this.state.id}`,
+        addfoodtruck,
         {
           headers: {
             "Content-Type": "application/json",
@@ -92,12 +94,28 @@ export default class Admaddresturent extends Component {
     // window.location = '/';
   }
 
+  delete(id) {
+    axios
+      .delete(`http://localhost:5300/api/foodTrucks/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getToken()}`
+        }
+      })
+      .then(res => {
+        document.getElementById("away").click();
 
+        console.log(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
   render() {
     return (
       <div>
-        <a href="/Resturents" style={{ display: "none" }} id="away"></a>;
-        <h3>Add A New Restaurant</h3>
+        <a href="/foodtrucks" style={{ display: "none" }} id="away"></a>;
+        <h3>edit</h3>
         <form onSubmit={this.onSubmit}>
           <div className="form-group">
             <label>Image URL: </label>
@@ -152,11 +170,18 @@ export default class Admaddresturent extends Component {
               type="submit"
               value="Save Changes"
               className="btn btn-primary"
-              onClick={this.submit}
+              onClick={this.edit}
             />
           </div>
         </form>
-     
+        <div className="form-group">
+          <input
+            type="submit"
+            value="Delete"
+            className="btn btn-primary"
+            onClick={() => this.delete(this.state.id)}
+          />
+        </div>
         {this.state.redirect == true &&
                     <Redirect to={{
                         pathname: '/login',

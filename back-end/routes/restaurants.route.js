@@ -2,6 +2,8 @@ const Restaurant = require("../models/Restaurant").Restaurant
 const Review = require("../models/Review");
 const express = require("express");
 const router = express.Router();
+const passport = require("passport");
+const jwt = require("jsonwebtoken");
 // get all food trucks data
 router.get("/", (req, res) => {
     console.log("inside get")
@@ -17,8 +19,9 @@ router.get("/", (req, res) => {
 });
 // Admin routes
 router.post(
-   "/add", // passport.authenticate("jwt", { session: false }),
+   "/add", passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    if(req.user.isAdmin){
       let Restauranta = {
         name: req.body.name,
         description: req.body.description,
@@ -51,14 +54,20 @@ router.post(
           return res.status(401).json({ error: "Error saving user", msg: e });
         });
   }
+  else {
+    return res.json({ message: "you're not authrized to view this page" });
+  }
+
+}
+ 
 );
 router.delete(
-  "/:id", // passport.authenticate("jwt", { session: false }),
+  "/:id",  passport.authenticate("jwt", { session: false }),
   (req, res) => {
     if (req.user.isAdmin) {
       Restaurant.findByIdAndDelete(req.params.id)
         .then(() => {
-          res.redirect("/api/restaurants");
+          res.send("deleted");
         })
         .catch(err => res.send(err));
     } else {
@@ -66,12 +75,31 @@ router.delete(
     }
   }
 );
-router.put("/edit/:id", // passport.authenticate("jwt", { session: false }),
+router.put("/edit/:id",  passport.authenticate("jwt", { session: false }),
   (req, res) => {
     if (req.user.isAdmin) {
-      Restaurant.findByIdAndUpdate(req.params.id, req.body)
+      let Restauranta = {
+        name: req.body.name,
+        description: req.body.description,
+        type: req.body.type,
+        location: req.body.location,
+        phones: req.body.phones,
+        sociallinks: [{
+          type: req.body.type,
+          link: req.body.link
+        }],
+       pictures: [{
+          filename: req.body.filename,
+          picURL : req.body.picURL,
+        }],
+        available_table_no: req.body.available_table_no,
+        reservable: req.body.reservable,
+        operation_days: req.body.operation_days,
+        capacity: req.body.capacity,
+      }
+      Restaurant.findByIdAndUpdate(req.params.id, Restauranta)
         .then(() => {
-          res.redirect("/api/restaurants");
+          res.send("updated");
         })
         .catch(err => res.send(err));
     } else {

@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 const router = express.Router();
 
 //get all food trucks data
-router.get("/", passport.authenticate("jwt", { session: false }), (req, res) => {
+router.get("/",  (req, res) => {
   FoodTruck.find()
     .then(data => {
       res.send(data);
@@ -23,6 +23,7 @@ router.get("/", passport.authenticate("jwt", { session: false }), (req, res) => 
 router.post(
   "/add",
   passport.authenticate("jwt", { session: false }),
+ 
   (req, res) => {
     if (req.user.isAdmin) {
       let foodTruck = {
@@ -65,7 +66,7 @@ router.delete(
     if (req.user.isAdmin) {
       FoodTruck.findByIdAndDelete(req.params.id)
         .then(() => {
-          res.redirect("/api/foodtrucks");
+          res.send("food truck deleted");
         })
         .catch(err => res.send(err));
     } else {
@@ -81,7 +82,7 @@ router.put(
     if (req.user.isAdmin) {
       FoodTruck.findByIdAndUpdate(req.params.id, req.body)
         .then(() => {
-          res.redirect("/api/foodtrucks");
+          res.send("resutrant was updated");
         })
         .catch(err => res.send(err));
     } else {

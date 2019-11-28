@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Nav, Navbar, Form, FormControl, Button,Container, Row, Col } from 'react-bootstrap';
 import Andalusia from "../assets/images/Andalusia.jpg";
-import SushiCentroimg from "../assets/images/SushiCentro.jpg";
 import { Route, BrowserRouter, Switch, Link,} from 'react-router-dom';
 import Admaddresturent from "./Admaddresturent";
 

@@ -6,12 +6,16 @@ import Footermenu from "./components/Footermenu";
 import Homepage from "./components/Homepage";
 import Resturents from "./components/Resturents";
 import Foodtrucks from "./components/Foodtrucks";
-import SushiCentro from "./components/SushiCentro";
 import Signinpage from "./components/Signinpage";
 import { getToken, setToken, logout, setUser, getUser } from "./services/auth";
 import axios from "axios";
+
+
+
+
 import PropTypes from "prop-types";
 import { withRouter } from "react-router";
+import Admaddfoodtruck from "./components/Admaddfoodtruck";
 
 export default class App extends Component {
   constructor(props) {
@@ -86,13 +90,14 @@ export default class App extends Component {
     return (
       <div>
         {/* <h1>You are now at {location.pathname}</h1>; */}
-
         <Navbarmenu
           userinfo={this.state}
           loginHandler={this.loginHandler}
           logout={this.logout}
           getHeader={this.getHeader}
         />
+        
+
         <Footermenu />
       </div>
     );

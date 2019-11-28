@@ -71,7 +71,7 @@ router.post("/login", (request, response) => {
       user.password = ""; //remove password
       console.log(user);
       const token = jwt.sign(user.toJSON(), "your_jwt_secret", {
-        expiresIn: 60 * 60
+        expiresIn: 60*60
       });
       return response.status(200).json({ user, token });
     });
@@ -79,11 +79,15 @@ router.post("/login", (request, response) => {
 });
 
 //will need aithntication
-router.put("/User/:id", (req, res) => {
+router.put("/User/:id", passport.authenticate("jwt", { session: false }), (req, res) => {
   User.findById(req.params.id).then(user => {
     console.log("found user")
+    console.log(req.body.password)
+    console.log(req.body.newPassword)
+
     bcrypt.compare(req.body.password, user.password,(err,response)=>{
      if(response){
+       console.log("i'm here")
       bcrypt.hash(req.body.newPassword, 10, (err, hash) => {
             req.body.password = req.body.newPassword;
     
