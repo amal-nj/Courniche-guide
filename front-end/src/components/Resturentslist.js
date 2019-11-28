@@ -10,7 +10,7 @@ export default class Resturentslist extends Component {
 
     render() {
       // console.log(this.props.food);
-      let isAdmin=this.props.isAdmin?<div><Link to={`/editrestuarnt/${this.props.id}`} ><Button variant="dark"> Edit</Button></Link></div>:<div><Button variant="dark"> <Link to={ "/Restaurantinfo/"+this.props.foodName} >see ditals</Link></Button> <br/>
+      let isAdmin=this.props.isAdmin?<div><Link to={`/editrestuarnt/${this.props.id}`} ><Button variant="dark"> Edit</Button></Link></div>:<div><Button variant="dark"> <Link to={ "/Restaurantinfo/"+this.props.foodName+"/"+this.props.id} >see details</Link></Button> <br/>
       <br/><Button variant="dark"> Go to Location </Button></div> 
         return (
             <div>
@@ -29,7 +29,6 @@ export default class Resturentslist extends Component {
                       </Col>
                   </Row>
                   <br/>
-                  
                </Container>
             </div>
         )

@@ -127,7 +127,7 @@ export default class Navbarmenu extends Component {
               )}
             />
             <Route
-              path="/Restaurantinfo/:name"
+              path="/Restaurantinfo/:name/:id"
               render={props => (
                 <Onerestaurant
                   {...props}
