@@ -20,6 +20,8 @@ const restaurantSchema = new Schema({
 	reservable: Boolean,
 	operation_days: {days:[String],time:String},			// need more detail
 	capacity: { tables: Number, seats: Number },
+	reviews: [{ type: Schema.Types.ObjectId, ref: "Review"}]
+
 })
 /*
 	menu schema
@@ -35,7 +37,8 @@ const menuSchema = new Schema({
 	price: Number,
 	currency: String,
 	description: String,
-	discount: String
+	discount: String,
+
 })
 /* Reservation schema */
 const reservationSchema = new Schema({

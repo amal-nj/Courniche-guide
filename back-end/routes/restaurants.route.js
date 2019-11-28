@@ -4,6 +4,7 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
+
 // get all food trucks data
 router.get("/", (req, res) => {
     console.log("inside get")
@@ -19,9 +20,9 @@ router.get("/", (req, res) => {
 });
 // Admin routes
 router.post(
-   "/add", passport.authenticate("jwt", { session: false }),
+   "/add", //passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    if(req.user.isAdmin){
+    if(true){
       let Restauranta = {
         name: req.body.name,
         description: req.body.description,
@@ -39,7 +40,7 @@ router.post(
         available_table_no: req.body.available_table_no,
         reservable: req.body.reservable,
         operation_days: req.body.operation_days,
-        capacity: req.body.capacity,
+        capacity: req.body.capacity
       }
       // instance of data
       let newRestaurant = new Restaurant(Restauranta);
@@ -75,7 +76,8 @@ router.delete(
     }
   }
 );
-router.put("/edit/:id",  passport.authenticate("jwt", { session: false }),
+router.put("/edit/:id", 
+passport.authenticate("jwt", { session: false }),
   (req, res) => {
     if (req.user.isAdmin) {
       let Restauranta = {
@@ -96,6 +98,7 @@ router.put("/edit/:id",  passport.authenticate("jwt", { session: false }),
         reservable: req.body.reservable,
         operation_days: req.body.operation_days,
         capacity: req.body.capacity,
+        reviews: req.body.reviews
       }
       Restaurant.findByIdAndUpdate(req.params.id, Restauranta)
         .then(() => {
@@ -123,9 +126,10 @@ router.get("/:id", (req, res) => {
 // needs authinication to confirm user's identity
 // needs to be rewritten with async await
 // post a review to a spcific restuarnt
-router.post("/review/:id", (req, res) => {
+router.post("/review/:id", passport.authenticate("jwt", { session: false }),(req, res) => {
+
   let review = new Review({
-    user: req.body.user, // should be user id, refrence to the user
+    user: req.user, // should be user id, refrence to the user
     review: req.body.review,
     rating: req.body.rating
   });
@@ -135,22 +139,25 @@ router.post("/review/:id", (req, res) => {
     .then(() => {
       Restaurant.findById(req.params.id)
         .then(data => {
+          console.log("this is data")
+          console.log(data)
           data.reviews.push(review);
           Restaurant.findByIdAndUpdate(req.params.id, data)
-            .then(data => {
-              res.send(data);
+            .then(data2 => {
+                console.log("really found it")
+              res.send(data2);
             })
             .catch(e => {
               return res
                 .status(401)
-                .json({ error: "Could not find restaurant", msg: e });
+                .json({ error: "Could not find restaurant 1", msg: e });
             });
           // res.send("saved!");
         })
         .catch(e => {
           return res
             .status(401)
-            .json({ error: "Could not find restaurant", msg: e });
+            .json({ error: "Could not find restaurant 2", msg: e });
         });
     })
     .catch(e => {
@@ -165,6 +172,17 @@ router.get("/review/:id", (req, res) => {
     })
     .catch(e => {
       return res.status(401).json({ error: "Error fetching reviews", msg: e });
+    });
+});
+
+router.delete("/review/:id", passport.authenticate("jwt", { session: false }), (req, res) => {
+  
+  Review.findByIdAndDelete(req.params.id)
+    .then(data => {
+      res.send("review deleted");
+    })
+    .catch(e => {
+      return res.status(401).json({ error: "Error deleteing review", msg: e });
     });
 });
 module.exports = router;
