@@ -3,8 +3,12 @@ import { Card } from 'react-bootstrap'
 
 export default class Onefoodtruck extends Component {
     render() {
+        var munu=[]
+        if(this.props.food){
+            if(this.props.food[0]){
 
-        var munu = !this.props.food ? [] : this.props.food[0].menu
+        munu = !this.props.food ? [] : this.props.food[0].menu}
+        }
         console.log(munu);
         return (
             <div>
