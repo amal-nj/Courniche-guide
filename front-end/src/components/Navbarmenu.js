@@ -180,7 +180,6 @@ export default class Navbarmenu extends Component {
                 )
               }
             />
-
             <Route
               path="/addfoodtruck"
               render={() =>
