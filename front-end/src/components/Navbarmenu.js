@@ -78,16 +78,15 @@ export default class Navbarmenu extends Component {
           access=this.props.userinfo.user.isAdmin
 
         }
-      
+
       }
-     
+
     return (
       <div>
         <BrowserRouter>
 
           <Navbar className="navmenu">
-            <img className="jwflogo" src={Jwflogo} />
-            <h1>Jeddah WaterFront</h1>
+            <h1 className ="title">JEDDAH WATERFRONT</h1>
             <Link className="nav-link" to="/">
               HOME
             </Link>
@@ -98,8 +97,7 @@ export default class Navbarmenu extends Component {
               Food Trucks
             </Link>
 
-            <img className="profileimg" src={Profileimg} />
-            <NavDropdown id="basic-nav-dropdown" title="nav bar">
+            <NavDropdown id="basic-nav-dropdown" title="Account">
               {log}
               <NavDropdown.Divider />
               <NavDropdown.Item href="#action/3.4">Contact us</NavDropdown.Item>
@@ -182,7 +180,6 @@ export default class Navbarmenu extends Component {
                 )
               }
             />
-            
             <Route
               path="/addfoodtruck"
               render={() =>
