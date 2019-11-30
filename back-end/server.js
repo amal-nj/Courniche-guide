@@ -12,6 +12,8 @@ const passport = require('passport')
 //mongoose connection
 const mongooseConnect = require('./config/mongodb')
 
+const cors = require("cors");
+server.use(cors());
 
 // uplaoud image
 
